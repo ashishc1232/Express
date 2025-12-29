@@ -1,0 +1,322 @@
+# 1. Node Project Setup
+
+## Step 1: Create Project Folder
+
+```bash
+mkdir my-app
+cd my-app
+```
+
+
+## Step 2: Initialize Node Project
+
+```bash
+npm init
+```
+
+or
+
+```bash
+npm init -y
+```
+
+This creates **package.json**
+
+
+
+## package.json – What & Why?
+
+`package.json` is the **heart of a Node project**.
+
+It contains:
+
+* Project info
+* Scripts
+* Dependencies
+* Entry point
+
+### Sample package.json
+
+```json
+{
+  "name": "my-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
+  }
+}
+```
+
+---
+
+## Dependencies vs Dev Dependencies
+
+### dependencies
+
+Used in **production**
+
+```bash
+npm install express
+```
+
+Examples:
+
+* express
+* mongoose
+* cors
+* dotenv
+
+### devDependencies
+
+Used only in **development**
+
+```bash
+npm install nodemon --save-dev
+```
+
+Examples:
+
+* nodemon
+* eslint
+* jest
+
+---
+
+## dev vs prod 
+
+| Environment | Purpose           |
+| ----------- | ----------------- |
+| Development | Coding, debugging |
+| Production  | Live application  |
+
+Production does **not** need dev tools.
+
+---
+
+# 2. Express App Setup
+
+## Install Express
+
+```bash
+npm install express
+```
+
+---
+
+## Basic Express App (index.js)
+
+```js
+const express = require("express");
+
+const app = express();
+
+app.get("/", (req, res) => {
+  res.send("Server is running");
+});
+
+app.listen(3000, () => {
+  console.log("Server started on port 3000");
+});
+```
+
+---
+
+## nodemon Setup
+
+nodemon automatically restarts server on code change.
+
+### Install
+
+```bash
+npm install nodemon --save-dev
+```
+
+### package.json script
+
+```json
+"scripts": {
+  "start": "node index.js",
+  "dev": "nodemon index.js"
+}
+```
+
+### Run server
+
+```bash
+npm run dev
+```
+
+---
+
+## Environment Variables (.env basics)
+
+### Why env variables?
+
+* Hide secrets
+* Different configs for dev/prod
+* Security
+
+---
+
+## Install dotenv
+
+```bash
+npm install dotenv
+```
+
+---
+
+## Create `.env` file
+
+```
+PORT=3000
+DB_URL=mongodb://localhost:27017/app
+```
+
+---
+
+## Use env in code
+
+```js
+require("dotenv").config();
+
+const PORT = process.env.PORT;
+
+app.listen(PORT, () => {
+  console.log(`Server running on ${PORT}`);
+});
+```
+
+---
+
+## Important Rule
+
+Never push `.env` to GitHub
+Add to `.gitignore`
+
+```
+.env
+node_modules
+```
+
+---
+
+# 3. Common Setup Mistakes
+
+### 1. Forgetting `app.listen()`
+
+Server never starts.
+
+---
+
+### 2. Not using `dotenv.config()`
+
+Env variables come as `undefined`.
+
+---
+
+### 3. Using nodemon in production
+
+nodemon is **dev only**.
+
+---
+
+### 4. Hardcoding secrets
+
+```js
+const password = "123456"; // wrong
+```
+
+---
+
+### 5. Wrong script usage
+
+```bash
+node run dev   
+npm run dev   
+```
+
+---
+
+### 6. Not handling JSON body
+
+```js
+app.use(express.json());
+```
+
+Without this, `req.body` is undefined.
+
+---
+
+# 4. Interview Questions (Important)
+
+### Q1. What is package.json?
+
+Configuration file that manages project metadata, scripts, and dependencies.
+
+---
+
+### Q2. Difference between dependencies and devDependencies?
+
+Dependencies are required in production, devDependencies only during development.
+
+---
+
+### Q3. Why nodemon is used?
+
+Automatically restarts server on file changes.
+
+---
+
+### Q4. What is `.env` file?
+
+Stores environment variables securely.
+
+---
+
+### Q5. How Express reads env variables?
+
+Using `process.env.VARIABLE_NAME`
+
+---
+
+### Q6. Why not push node_modules?
+
+Too large, regenerated using package.json.
+
+---
+
+### Q7. What happens if PORT is not defined?
+
+Server fails or runs on default port.
+
+---
+
+### Q8. Why framework like Express?
+
+To reduce boilerplate, improve readability, scalability.
+
+---
+
+# 5. Clean Folder Structure (Basic)
+
+```
+my-app
+│
+├── node_modules
+├── .env
+├── .gitignore
+├── index.js
+├── package.json
+```
+
+
+
